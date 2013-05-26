@@ -102,10 +102,12 @@ $(document).ready(function(){
 			var tourStopsCoordinates = [];
 			
 			for (var x = 0; x < 4; x++) {
+				var ecIcon = "images/ecIcon.png";
 				var myLatLng = new google.maps.LatLng(storedMarkers[x].lat,storedMarkers[x].lng);
 				var beachMarker = new google.maps.Marker({
 					position: myLatLng,
 					map: map,
+					icon: ecIcon,
 					title: "Position" + x
 				});
 				tourStopsCoordinates.push(new google.maps.LatLng(storedMarkers[x].lat,storedMarkers[x].lng));
