@@ -24,7 +24,7 @@ $(document).ready(function(){
 		var markersActive = [];
 		var tourStopsCoordinates = [];
 		var tourPaths = [];
-		
+		var infoBoxes = [];
 		// -- -- Map functions --
 		
 		
@@ -81,6 +81,7 @@ $(document).ready(function(){
 										enableEventPropagation: false,
 									};
 									var markerInfoBox = new InfoBox(myOptions);
+									infoBoxes.push(markerInfoBox);
 									markerInfoBox.open(map, marker);
 								});
 
@@ -167,14 +168,14 @@ $(document).ready(function(){
 			
 			
 			for (i=0; i<tourPaths.length; i++) {                           
-				tourPaths[i].setMap(map); //or line[i].setVisible(false);
+				tourPaths[i].setMap(map);
 			}
 			
 		
 		});
 
 		//		clear markers and routes
-		$('#clearMapMarkers').click(function(){
+		$('#resetMap').click(function(){
 			// remove markers
 			clearLocationsList();
 			for (var i = 0; i < markersActive.length; i++ ) {
@@ -188,6 +189,11 @@ $(document).ready(function(){
 				tourPaths[i].setMap(null); //or line[i].setVisible(false);
 			}
 			tourPaths = [];
+
+			for (i=0; i<infoBoxes.length; i++) {                           
+				infoBoxes[i].setMap(null); //or line[i].setVisible(false);
+			}
+			infoBoxes = []
 
 		});
 		
