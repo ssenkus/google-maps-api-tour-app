@@ -1,6 +1,7 @@
 
 $(document).ready(function(){
 
+		// Load map
 		var coords = new google.maps.LatLng('45.09', '-122.77');
 		var mapOptions = {
 			zoom: 7,
@@ -12,22 +13,24 @@ $(document).ready(function(){
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-/*
-  var weatherLayer = new google.maps.weather.WeatherLayer({
-    temperatureUnits: google.maps.weather.TemperatureUnit.FAHRENHEIT
-  });
-  weatherLayer.setMap(map);
-
-  var cloudLayer = new google.maps.weather.CloudLayer();
-  cloudLayer.setMap(map);
-*/
-//  var transitLayer = new google.maps.TransitLayer();
-//  transitLayer.setMap(map);
-
-
 		var markersActive = [];
-					
-					
+		
+		var tourPath = new google.maps.Polyline({
+		});
+		
+		
+		// Click functions		
+		//		click on map -> place marker
+		function placeMarker(location) {
+			var clickMarker = new google.maps.Marker({
+				position: location,
+				map: map
+			});
+			markersActive.push(clickMarker);
+			tourStopsCoordinates.push(location);
+		}
+		
+		//		Geolocate button -> place marker at IP address geolocation
 		$('#geolocate').click(function() {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(function(position){
@@ -57,9 +60,10 @@ $(document).ready(function(){
 					});
 				});
 			}
-
 		});
 		
+		
+		//		Add Tour Point with Coordinates -> 
 		$('#addTourPoint').click(function(){
 				var markerLat = $('#addTPLat').val();;
 				var markerLng = $('#addTPLng').val();
@@ -95,6 +99,8 @@ $(document).ready(function(){
 		});
 			var tourStopsCoordinates = [];		
 		
+		
+		//		Add 4 dummy markers
 		$('#addDummyMarkers').click(function() {
 		
 			// Dummy data for markers that will be returieved from the db later on...
@@ -117,9 +123,7 @@ $(document).ready(function(){
 					}
 			};
 			
-
 			var storedMarkersCount = Object.keys(storedMarkers).length
-
 
 			for (var x = 0; x < storedMarkersCount; x++) {
 			
@@ -157,22 +161,15 @@ $(document).ready(function(){
 									alert("xhr status: " + xhr.statusText +"\nError thrown: " + thrownError);    
 								}
 				});			
-				console.log(markersActive[x].title);
 			
+			}
 			
-				}
-			
-			
-			
-			
-
-	
 		});
 
-		
+		//		Draw tour path button
 		$('#drawTourPath').click(function () {
 			console.log(tourStopsCoordinates);
-			var tourPath = new google.maps.Polyline({
+			tourPath = new google.maps.Polyline({
 				path: tourStopsCoordinates,
 				strokeColor: "#F00",
 				strokeOpacity: 1.0,
@@ -184,6 +181,18 @@ $(document).ready(function(){
 		});
 		
 		
+		google.maps.event.addListener(map, 'click', function(event) {
+			placeMarker(event.latLng);
+		});
+
+		//		clear markers and routes
+		$('#clearMapMarkers').click(function(){
+			markersActive = [];
+			tourStopsCoordinates = [];
+			console.log(tourPath);
+			tourPath.setMap(null);
+			markersActive = [];
+		});
 	
 	/* Geolocation code
 		if(navigator.geolocation) {
@@ -199,4 +208,18 @@ $(document).ready(function(){
 		});
 		
 */
+
+/*
+  var weatherLayer = new google.maps.weather.WeatherLayer({
+    temperatureUnits: google.maps.weather.TemperatureUnit.FAHRENHEIT
+  });
+  weatherLayer.setMap(map);
+
+  var cloudLayer = new google.maps.weather.CloudLayer();
+  cloudLayer.setMap(map);
+*/
+//  var transitLayer = new google.maps.TransitLayer();
+//  transitLayer.setMap(map);
+
+
 });
