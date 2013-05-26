@@ -142,11 +142,14 @@ $(document).ready(function(){
 
 		//		clear markers and routes
 		$('#clearMapMarkers').click(function(){
+
+			for (var i = 0; i < markersActive.length; i++ ) {
+				markersActive[i].setMap(null);
+			}
+
 			markersActive = [];
 			tourStopsCoordinates = [];
-			console.log(tourPath);
 			tourPath.setMap(null);
-			markersActive = [];
 
 		});
 	
