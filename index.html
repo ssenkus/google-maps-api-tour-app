@@ -6,12 +6,21 @@
 		<style type="text/css">
 		html { height: 100% }
 		body { height: 100%; margin: 0; padding: 0 }
-		#map-canvas { height: 500px; width: 500px; margin: 100px auto; }
+		ul {
+			float:left;
+			width: 200px;
+			height: 400px;
+			font-size: 12px;
+		}
+		#map-canvas { height: 500px; width: 500px; float:left; }
 		</style>
 	</head>
 	<body>
 		<button id="geolocate" type="button" >Geolocation</button>
+		<button id="drawTourPath" type="button">Draw Tour Path</button>
 		<button id="addTourPoint" type="button" >Add Tour Point</button>
+		<input type=text id="addTPLat" />
+		<input type=text id="addTPLng" />
 		<button id="addDummyMarkers" type="button" >Add Dummy Markers</button>
 
 		<ul id="location-list">
@@ -19,7 +28,7 @@
 		<div id="map-canvas"></div>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-pcRY1ddJccibC3RgxzvgTRIRG7Vwjk0&sensor=true"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-pcRY1ddJccibC3RgxzvgTRIRG7Vwjk0&sensor=false"></script>
 		<script type="text/javascript" src="scripts/gmap-ec-tour.js"></script>
 	</body>
 </html>
