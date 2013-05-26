@@ -26,6 +26,11 @@ $(document).ready(function(){
 		// Marker Data functions
 		function addToLocationList (geocodeAddress) {
 				$("#location-list").append('<li>'+ geocodeAddress + " </li>");
+
+		}
+		
+		function clearLocationsList() {
+			$("#location-list li").remove();
 		}
 		
 		// -- Click functions --
@@ -86,11 +91,11 @@ $(document).ready(function(){
 			var storedMarkers = {
 					0: {
 						lat:	"45.08",
-						lng:	"-122.77"
+						lng:	"-123.77"
 					},
 					1: {
 						lat:	"45.18",
-						lng:	"-122.67"
+						lng:	"-123.17"
 					},
 					2: {
 						lat:	"45.28",
@@ -104,17 +109,10 @@ $(document).ready(function(){
 			
 			//var storedMarkersCount = Object.keys(storedMarkers).length
 			for (var location in storedMarkers) {
-				
 				var markerLat = storedMarkers[location].lat;
 				var markerLng = storedMarkers[location].lng;
-				
 				addMarker(markerLat, markerLng);
 			}
-			/*for (var i = 0; i < storedMarkersCount; i++) {
-				var markerLat = storedMarkers[i].lat;
-				var markerLng = storedMarkers[i].lng;
-				addMarker(markerLat, markerLng);
-			}*/
 			
 		});
 
@@ -143,10 +141,11 @@ $(document).ready(function(){
 		//		clear markers and routes
 		$('#clearMapMarkers').click(function(){
 
+		clearLocationsList();
 			for (var i = 0; i < markersActive.length; i++ ) {
 				markersActive[i].setMap(null);
 			}
-
+		
 			markersActive = [];
 			tourStopsCoordinates = [];
 			tourPath.setMap(null);
