@@ -1,3 +1,8 @@
+/* if(!Array.prototype.last) {
+    Array.prototype.last = function() {
+        return this[this.length - 1];
+    }
+} */
 
 $(document).ready(function(){
 
@@ -18,7 +23,7 @@ $(document).ready(function(){
 		
 		var markersActive = [];
 		var tourStopsCoordinates = [];
-		var tourPath;
+		var tourPaths = [];
 		
 		// -- -- Map functions --
 		
@@ -52,6 +57,33 @@ $(document).ready(function(){
 									title: currentAddress,
 									animation: google.maps.Animation.DROP
 								});
+								
+								google.maps.event.addListener(marker, 'click', function() {
+									var boxText = document.createElement("div");
+									boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: #fafafa; padding: 5px; border-radius: 25px;";
+									boxText.innerHTML = currentAddress;
+									var myOptions = {
+										content: boxText,
+										disableAutoPan: false,
+										maxWidth: 0,
+										pixelOffset: new google.maps.Size(-140, 0),
+										zIndex: null,
+										boxStyle: { 
+											background: "url('tipbox.gif') no-repeat",
+											opacity: 0.75,
+											width: "280px"
+										},
+										closeBoxMargin: "10px 2px 2px 2px",
+										closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+										infoBoxClearance: new google.maps.Size(1, 1),
+										isHidden: false,
+										pane: "floatPane",
+										enableEventPropagation: false,
+									};
+									var markerInfoBox = new InfoBox(myOptions);
+									markerInfoBox.open(map, marker);
+								});
+
 								addToLocationList(currentAddress);
 								markersActive.push(marker);
 								tourStopsCoordinates.push(markerCoords);
@@ -60,6 +92,13 @@ $(document).ready(function(){
 								alert("xhr status: " + xhr.statusText +"\nError thrown: " + thrownError);    
 							}
 			});
+			
+
+			
+
+			
+			
+			
 		}
 		
 		// -- -- 'Geolocate' button -> place marker at IP address geolocation
@@ -77,6 +116,7 @@ $(document).ready(function(){
 		// -- -- 'Add Tour Point' with input field Coordinates -> 
 		$('#addTourPoint').click(function(){
 				// get input field values
+
 				var inputLat = $('#addTPLat').val();
 				var inputLng = $('#addTPLng').val();
 				addMarker(inputLat, inputLng);
@@ -118,40 +158,49 @@ $(document).ready(function(){
 
 		//		Draw tour path button
 		$('#drawTourPath').click(function () {
-
-			tourPath = new google.maps.Polyline({
+			tourPaths.push(new google.maps.Polyline({
 				path: tourStopsCoordinates,
 				strokeColor: "#F00",
 				strokeOpacity: 1.0,
 				strokeWeight: 3
-			});
-
-			tourPath.setMap(map);
+			}));
+			
+			
+			for (i=0; i<tourPaths.length; i++) {                           
+				tourPaths[i].setMap(map); //or line[i].setVisible(false);
+			}
+			
 		
-		});
-		
-		
-		google.maps.event.addListener(map, 'click', function(event) {
-		//		click on map -> place marker
-			var clickLat = event.latLng['jb'];
-			var clickLng = event.latLng['kb'];
-			addMarker(clickLat, clickLng);
 		});
 
 		//		clear markers and routes
 		$('#clearMapMarkers').click(function(){
-
-		clearLocationsList();
+			// remove markers
+			clearLocationsList();
 			for (var i = 0; i < markersActive.length; i++ ) {
 				markersActive[i].setMap(null);
 			}
-		
 			markersActive = [];
+			
+			// remove path
 			tourStopsCoordinates = [];
-			tourPath.setMap(null);
+			for (i=0; i<tourPaths.length; i++) {                           
+				tourPaths[i].setMap(null); //or line[i].setVisible(false);
+			}
+			tourPaths = [];
 
 		});
+		
+		//		click on map -> place marker
+		google.maps.event.addListener(map, 'click', function(event) {
+			var clickLat = event.latLng['jb'];
+			var clickLng = event.latLng['kb'];
+			addMarker(clickLat, clickLng);
+		});
 	
+
+
+  
 
 /*
   var weatherLayer = new google.maps.weather.WeatherLayer({
