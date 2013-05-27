@@ -94,12 +94,6 @@ $(document).ready(function(){
 							}
 			});
 			
-
-			
-
-			
-			
-			
 		}
 		
 		// -- -- 'Geolocate' button -> place marker at IP address geolocation
@@ -122,8 +116,6 @@ $(document).ready(function(){
 				var inputLng = $('#addTPLng').val();
 				addMarker(inputLat, inputLng);
 		});
-		
-		
 		
 		//		Add 4 dummy markers
 		$('#addDummyMarkers').click(function() {
@@ -171,7 +163,6 @@ $(document).ready(function(){
 				tourPaths[i].setMap(map);
 			}
 			
-		
 		});
 
 		//		clear markers and routes
@@ -186,12 +177,13 @@ $(document).ready(function(){
 			// remove path
 			tourStopsCoordinates = [];
 			for (i=0; i<tourPaths.length; i++) {                           
-				tourPaths[i].setMap(null); //or line[i].setVisible(false);
+				tourPaths[i].setMap(null);
 			}
 			tourPaths = [];
 
+			// remove infoboxes
 			for (i=0; i<infoBoxes.length; i++) {                           
-				infoBoxes[i].setMap(null); //or line[i].setVisible(false);
+				infoBoxes[i].setMap(null);
 			}
 			infoBoxes = []
 
