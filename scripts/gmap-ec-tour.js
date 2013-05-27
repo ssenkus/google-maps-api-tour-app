@@ -1,9 +1,3 @@
-/* if(!Array.prototype.last) {
-    Array.prototype.last = function() {
-        return this[this.length - 1];
-    }
-} */
-
 $(document).ready(function(){
 
 		// -- Map --
@@ -29,8 +23,14 @@ $(document).ready(function(){
 		
 		
 		// Marker Data functions
-		function addToLocationList (geocodeAddress) {
-				$("#location-list").append('<li>'+ geocodeAddress + " </li>");
+		function addToLocationList(geocodeAddress) {
+			$("#location-list").append('<li></li>');
+			
+			var result = '';
+				for (var i = 0; i < geocodeAddress.length; i++) {
+					result += '<option value="'+ i + '">' +geocodeAddress[i]+ '</option>';
+				}
+			$("#location-list > li").last().append('<select>' + result + '</select>');
 
 		}
 		
@@ -48,20 +48,23 @@ $(document).ready(function(){
 				url: 		"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+","+longitude+"&sensor=true",
 				dataType:	"json",
 				success:    function(data) {
+								var currentAddress = [];
+								var i;
 								
-								var currentAddress = data.results[1]['formatted_address'];
-								
+								for (i = 0; i < data.results.length; i++) {
+									currentAddress.push(data.results[i]['formatted_address']);
+								}
 								var marker = new google.maps.Marker({
 									position: markerCoords,
 									map: map,
-									title: currentAddress,
+									title: currentAddress[1],
 									animation: google.maps.Animation.DROP
 								});
 								
 								google.maps.event.addListener(marker, 'click', function() {
 									var boxText = document.createElement("div");
 									boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: #fafafa; padding: 5px; border-radius: 25px;";
-									boxText.innerHTML = currentAddress;
+									boxText.innerHTML = currentAddress[1];
 									var myOptions = {
 										content: boxText,
 										disableAutoPan: false,
