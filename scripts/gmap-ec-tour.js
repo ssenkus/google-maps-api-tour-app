@@ -13,9 +13,9 @@ $(document).ready(function(){
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-		
-		
-		var markersActive = [];
+	
+		// data storage
+		var markersActive = [];  
 		var tourStopsCoordinates = [];
 		var tourPaths = [];
 		var infoBoxes = [];
@@ -143,7 +143,6 @@ $(document).ready(function(){
 					}
 			};
 			
-			//var storedMarkersCount = Object.keys(storedMarkers).length
 			for (var location in storedMarkers) {
 				var markerLat = storedMarkers[location].lat;
 				var markerLng = storedMarkers[location].lng;
@@ -168,6 +167,16 @@ $(document).ready(function(){
 			
 		});
 
+		//		Delete last point and update
+		$('#deleteLastPoint').click(function() {
+			$("#location-list li:last").remove();
+			markersActive[markersActive.length-1].setMap(null);
+			markersActive.pop();
+			tourStopsCoordinates[tourStopsCoordinates.length-1].setMap(null);
+			tourStopsCoordinates.pop();
+			tourPaths[tourPaths.length-1].pop();
+		});
+		
 		//		clear markers and routes
 		$('#resetMap').click(function(){
 			// remove markers
